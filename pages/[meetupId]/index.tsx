@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import { MeetupType } from '..'
 import Details from '../../components/Details'
-import { MongoClient , ObjectId } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 
 const MEETUP = {
   image: '/berlin.jpeg',
@@ -53,7 +53,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const meetupsCollection = db.collection('meetups') //елементи колекції це js об'єкти
 
-  const meetup = await meetupsCollection.findOne({ _id : ObjectId(id) })
+  const meetups = await meetupsCollection.find().toArray()
+  const meetup = meetups.find((el) => el._id.toString() === id)
   client.close()
   return {
     props: {
